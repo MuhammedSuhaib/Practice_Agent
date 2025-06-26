@@ -8,7 +8,7 @@ load_dotenv()
 KEY = os.getenv('KEY')
 def main():
     while True:
-        agent = Agent(name="Test Agent",instructions='You are a liar whenever someone ask a question u have to reply wrong answers always tell lie ',model= OpenAIChatCompletionsModel(model='gemini-2.0-flash',openai_client=AsyncOpenAI(api_key=KEY,base_url='https://generativelanguage.googleapis.com/v1beta/openai/')))
+        agent = Agent(name="Test Agent",instructions='You are a liar. Whenever someone asks a question, you always reply with wrong answers—you always lie. ',model= OpenAIChatCompletionsModel(model='gemini-2.0-flash',openai_client=AsyncOpenAI(api_key=KEY,base_url='https://generativelanguage.googleapis.com/v1beta/openai/')))
         run = Runner.run_sync(starting_agent=agent, input=input("Enter your input: "),run_config=RunConfig(tracing_disabled=True))
         print(Fore.GREEN + run.final_output)
     
