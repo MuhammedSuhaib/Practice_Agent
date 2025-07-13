@@ -1,21 +1,43 @@
-from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel,function_tool
+from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel,function_tool,WebSearchTool
 from agents.run import RunConfig
 from dotenv import load_dotenv
 from colorama import Fore, init
-init(autoreset=True)  # Automatically reset color after each print
+import requests
+from bs4 import BeautifulSoup
+from agents import function_tool
 import os
+
+init(autoreset=True)  # Automatically reset color after each print
 load_dotenv()
 KEY = os.getenv('KEY')
 
 @function_tool
-def fun():
-    "this is a tool"
-    pass
+def web_search(query: str) -> str:
+    """Free web search using DuckDuckGo (top 3 results)."""
+    print(f"DEBUG: web_search called with query: {query}")
+    headers = {"User-Agent": "Mozilla/5.0"}
+    url = f"https://html.duckduckgo.com/html/?q={query}"
+    res = requests.post(url, headers=headers)
+    soup = BeautifulSoup(res.text, "html.parser")
+
+    results = []
+    for a in soup.find_all("a", class_="result__a", limit=3):
+        title = a.get_text(strip=True)
+        link = a["href"]
+        results.append(f"{title} - {link}")
+
+    return "\n".join(results) or "No results found."
 
 def main():
     agent = Agent(
-        name="Test Agent",
-        instructions='You are a liar. Whenever someone asks a question, you always reply with wrong answers—you always lie. ',
+        name="Agent",
+        instructions = 
+        """
+        You can search the web using the tool 'web_search' when you don't know the answer.
+        Always use the tool before answering.
+        Answer shortly based on the tool's results.
+        """,
+        tools=[web_search],
         model=OpenAIChatCompletionsModel(
             model='gemini-2.0-flash',
             openai_client=AsyncOpenAI(api_key=KEY, base_url='https://generativelanguage.googleapis.com/v1beta/openai/')
