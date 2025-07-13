@@ -1,4 +1,4 @@
-from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel
+from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel,function_tool
 from agents.run import RunConfig
 from dotenv import load_dotenv
 from colorama import Fore, init
@@ -7,6 +7,10 @@ import os
 load_dotenv()
 KEY = os.getenv('KEY')
 
+@function_tool
+def fun():
+    "this is a tool"
+    pass
 
 def main():
     agent = Agent(
