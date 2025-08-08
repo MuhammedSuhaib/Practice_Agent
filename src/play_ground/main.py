@@ -1,4 +1,4 @@
-from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel,function_tool,WebSearchTool
+from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel,WebSearchTool,function_tool,set_tracing_export_api_key
 from agents.run import RunConfig
 from dotenv import load_dotenv
 from colorama import Fore, init
@@ -10,6 +10,7 @@ import os
 init(autoreset=True)  # Automatically reset color after each print
 load_dotenv()
 KEY = os.getenv('KEY')
+Tracing_key = os.getenv('Tracing_key')
 
 @function_tool
 def web_search(query: str) -> str:
@@ -38,6 +39,7 @@ def main():
         Answer shortly based on the tool's results.
         """,
         tools=[web_search],
+        tool_use_behavior="stop_on_first_tool",
         model=OpenAIChatCompletionsModel(
             model='gemini-2.0-flash',
             openai_client=AsyncOpenAI(api_key=KEY, base_url='https://generativelanguage.googleapis.com/v1beta/openai/')
@@ -53,7 +55,8 @@ def main():
         run = Runner.run_sync(
             starting_agent=agent,
             input=context,
-            run_config=RunConfig(tracing_disabled=True)
+            # run_config=RunConfig(tracing_disabled=True)
         )
         conversation_history.append(f"Assistant: {run.final_output}")
+        set_tracing_export_api_key(Tracing_key)
         print(Fore.GREEN + run.final_output)
