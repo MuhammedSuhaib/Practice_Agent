@@ -1,30 +1,25 @@
+# Web Search Agent
 
+Python agent that can search the web using DuckDuckGo or Tavily API.  
 
-## 🤖 Liar AI Agent (Gemini API)
+## Requirements
+- Python 3.10+
+- [uv](https://github.com/astral-sh/uv) for dependency management
+- Environment variables in `.env`:
+```
 
-This script creates an AI agent that **intentionally lies** in response to user input using the **Gemini API** via an OpenAI-compatible wrapper.
+GEMINI_API_KEY=your_key
+Tracing_key=your_key
+Tavily_API_KEY=your_key
 
-### 📦 Requirements
+````
 
-* Python 3.8+
-* `.env` file with:
-
-  ```
-  KEY=your_gemini_api_key
-  ```
-
-### 🚀 Run
+## Run
 
 ```bash
 uv run go
 ```
 
-### 🔧 Tech Used
+Type queries in the prompt.
+Type `off` to exit.
 
-* Gemini 2.0 Flash (OpenAI-style)
-* `dotenv`, `colorama`
-* Custom `Agent`, `Runner`, `RunConfig` from `agents` module
-
-### ⚠️ Note
-
-Agent is **intentionally misleading** — useful for testing, reverse psychology bots, etc.
