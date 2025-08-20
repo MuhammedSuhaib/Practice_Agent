@@ -21,5 +21,18 @@ uv run go
 ```
 
 Type queries in the prompt.
+
+```
+Enter your input: who is the CEO of Panacloud
+>>>: tavily_search called with query: CEO of Panacloud
+Zia Khan is the CEO of Panacloud.
+```
+
 Type `off` to exit.
 
+```
+
+Enter your input: off
+
+(play-ground) D:\VScode\.py\_Practice_Agent>
+```
